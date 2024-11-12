@@ -8,12 +8,19 @@
 import Foundation
 import UIKit
 
+protocol GetExperincesProtocol {
+    func getExperinces()
+}
+
 class DestinationCell: UICollectionViewCell {
     
     var destinationImageView: DestinationImageView!
     var destinationName: UILabel!
     var favouriteButton: UIButton!
     var favouriteCount: UILabel!
+    var experinceID: String?
+    var conroller: GetExperincesProtocol?
+    
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -26,8 +33,9 @@ class DestinationCell: UICollectionViewCell {
     
     private func setupUI() {
         destinationImageView = DestinationImageView()
-        destinationName = UILabel.create(text: "Destination name", font: .boldSystemFont(ofSize: 14))
-        favouriteButton = UIButton.create(image: UIImage(systemName: "heart.fill"), tintColor: .myTeal)
+        destinationName = UILabel.create(text: "Destination name", font: .boldSystemFont(ofSize: 14), maxLines: 1)
+        favouriteButton = UIButton.create(image: UIImage(systemName: "heart"), tintColor: .myTeal)
+        favouriteButton.addTarget(self, action: #selector(toggleFavouriteButton), for: .touchUpInside)
         favouriteCount = UILabel.create(text: "200", font: .boldSystemFont(ofSize: 14))
         
         contentView.addSubview(destinationImageView)
@@ -47,7 +55,8 @@ class DestinationCell: UICollectionViewCell {
             
             destinationName.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
             destinationName.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
-            destinationName.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
+            //destinationName.trailingAnchor.constraint(equalTo: favouriteCount.leadingAnchor, constant: -5),
+            destinationName.widthAnchor.constraint(equalTo: contentView.widthAnchor, multiplier: 0.7),
             
             favouriteButton.bottomAnchor.constraint(equalTo: destinationName.bottomAnchor),
             favouriteButton.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -5),
@@ -55,8 +64,31 @@ class DestinationCell: UICollectionViewCell {
             favouriteButton.widthAnchor.constraint(equalToConstant: 20),
             
             favouriteCount.bottomAnchor.constraint(equalTo: favouriteButton.bottomAnchor),
-            favouriteCount.trailingAnchor.constraint(equalTo: favouriteButton.leadingAnchor, constant: -8)
+            favouriteCount.trailingAnchor.constraint(equalTo: favouriteButton.leadingAnchor, constant: -8),
+            //favouriteCount.widthAnchor.constraint(equalToConstant: 38)
         ])
+    }
+    
+    @objc func toggleFavouriteButton() {
+        guard let id = experinceID else {return}
+        
+        if UserDefaults.standard.value(forKey: id) != nil {
+            favouriteButton.setImage(UIImage(systemName: "heart.fill"), for: .normal)
+            return
+        }
+        
+        favouriteButton.setImage(UIImage(systemName: "heart.fill"), for: .normal)
+        self.favouriteCount.text = (Int(self.favouriteCount.text!)! + 1).description
+        
+        NetworkSevice.instance.fetchData(url: APIHandler.getExperincesURL(.likeExperince(id: id)), method: .post, type: Data.self, decodResult: false) { result in
+            switch result {
+            case .success(_):
+                UserDefaults.standard.setValue(true, forKey: id)
+                self.conroller?.getExperinces()
+            case .failure(let error):
+                print(error.localizedDescription)
+            }
+        }
     }
     
 }

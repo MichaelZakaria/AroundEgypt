@@ -28,7 +28,7 @@ class DestinationImageView: UIView {
     }
     
     private func setupUI() {
-        destinationImageView = UIImageView.create(image: .gratisographyCyberKitty800X525, contentMode: .scaleAspectFill)
+        destinationImageView = UIImageView.create(image: .background, contentMode: .scaleAspectFill)
         destinationImageView.layer.cornerRadius = min(destinationImageView.frame.width, destinationImageView.frame.height) / 32
         infoButton = UIButton.create(image: UIImage(systemName: "info.circle"))
         imagesButton = UIButton.create(image: UIImage(systemName: "photo.on.rectangle"))
