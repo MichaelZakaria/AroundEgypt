@@ -30,7 +30,6 @@ class SectionHeaderView: UICollectionReusableView {
         label.textAlignment = .center
         label.font = UIFont.boldSystemFont(ofSize: 22)
         label.textColor = .black
-        //self.backgroundColor = .darkGray
         
         addSubview(label)
         
@@ -38,7 +37,6 @@ class SectionHeaderView: UICollectionReusableView {
             label.leadingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.leadingAnchor, constant: 10),
             label.centerYAnchor.constraint(equalTo: self.centerYAnchor)
         ])
-        
         
     }
     

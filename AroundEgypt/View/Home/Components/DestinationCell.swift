@@ -8,8 +8,8 @@
 import Foundation
 import UIKit
 
-protocol GetExperincesProtocol {
-    func getExperinces()
+protocol UpdateFavouriteCountProtocol {
+    func updateFavouriteCount(experienceID: String)
 }
 
 class DestinationCell: UICollectionViewCell {
@@ -18,11 +18,16 @@ class DestinationCell: UICollectionViewCell {
     var destinationName: UILabel!
     var favouriteButton: UIButton!
     var favouriteCount: UILabel!
-    var experinceID: String?
-    var conroller: GetExperincesProtocol?
-    
+    var experince: Experience? {
+        didSet {
+            configureCell(with: experince)
+        }
+    }
+    var vm: DestinationCellViewModel
+    var conroller: UpdateFavouriteCountProtocol?
     
     override init(frame: CGRect) {
+        vm = DestinationCellViewModel()
         super.init(frame: frame)
         setupUI()
     }
@@ -34,7 +39,7 @@ class DestinationCell: UICollectionViewCell {
     private func setupUI() {
         destinationImageView = DestinationImageView()
         destinationName = UILabel.create(text: "Destination name", font: .boldSystemFont(ofSize: 14), maxLines: 1)
-        favouriteButton = UIButton.create(image: UIImage(systemName: "heart"), tintColor: .myTeal)
+        favouriteButton = UIButton.create(image: UIImage(systemName: "heart.fill"), tintColor: .myTeal)
         favouriteButton.addTarget(self, action: #selector(toggleFavouriteButton), for: .touchUpInside)
         favouriteCount = UILabel.create(text: "200", font: .boldSystemFont(ofSize: 14))
         
@@ -55,7 +60,6 @@ class DestinationCell: UICollectionViewCell {
             
             destinationName.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
             destinationName.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
-            //destinationName.trailingAnchor.constraint(equalTo: favouriteCount.leadingAnchor, constant: -5),
             destinationName.widthAnchor.constraint(equalTo: contentView.widthAnchor, multiplier: 0.7),
             
             favouriteButton.bottomAnchor.constraint(equalTo: destinationName.bottomAnchor),
@@ -65,29 +69,37 @@ class DestinationCell: UICollectionViewCell {
             
             favouriteCount.bottomAnchor.constraint(equalTo: favouriteButton.bottomAnchor),
             favouriteCount.trailingAnchor.constraint(equalTo: favouriteButton.leadingAnchor, constant: -8),
-            //favouriteCount.widthAnchor.constraint(equalToConstant: 38)
         ])
     }
     
-    @objc func toggleFavouriteButton() {
-        guard let id = experinceID else {return}
+    func configureCell(with experience: Experience?) {
+        guard let experience = experience else { return }
         
-        if UserDefaults.standard.value(forKey: id) != nil {
-            favouriteButton.setImage(UIImage(systemName: "heart.fill"), for: .normal)
-            return
+        destinationName.text = experience.title
+        favouriteCount.text = experience.likesNumber.description
+        destinationImageView.viewsCountLabel.text = experience.viewsNumber.description
+        
+        vm.getCoverPhoto(experince: experience) { data in
+            self.destinationImageView.destinationImageView.image = UIImage(data: data)
         }
+        
+        if UserDefaults.standard.value(forKey: experience.id) != nil {
+            favouriteButton.imageView?.image = UIImage(systemName: "heart.fill")
+        } else {
+            favouriteButton.imageView?.image = UIImage(systemName: "heart")
+        }
+        
+        destinationImageView.recommenedBanner.isHidden = experience.recommended != 1
+    }
+    
+    @objc func toggleFavouriteButton() {
+        guard let id = experince?.id, UserDefaults.standard.value(forKey: id) == nil  else { return }
         
         favouriteButton.setImage(UIImage(systemName: "heart.fill"), for: .normal)
         self.favouriteCount.text = (Int(self.favouriteCount.text!)! + 1).description
         
-        NetworkSevice.instance.fetchData(url: APIHandler.getExperincesURL(.likeExperince(id: id)), method: .post, type: Data.self, decodResult: false) { result in
-            switch result {
-            case .success(_):
-                UserDefaults.standard.setValue(true, forKey: id)
-                self.conroller?.getExperinces()
-            case .failure(let error):
-                print(error.localizedDescription)
-            }
+        vm.postLike(id: id) {
+            self.conroller?.updateFavouriteCount(experienceID: id)
         }
     }
     

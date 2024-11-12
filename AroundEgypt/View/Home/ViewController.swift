@@ -7,7 +7,7 @@
 
 import UIKit
 
-class ViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, UISearchBarDelegate, UISearchResultsUpdating, GetExperincesProtocol {
+class ViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, UISearchBarDelegate, UISearchResultsUpdating, UpdateFavouriteCountProtocol {
     
     private var topBar: TopBarView!
     private var titleLabel: UILabel!
@@ -16,19 +16,30 @@ class ViewController: UIViewController, UICollectionViewDelegate, UICollectionVi
     
     var vm: HomeViewModel?
     
+    var filteredExperinces: [Experience] = []
+    var searchFlag: Bool = false
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
         setupViewUI()
         vm = HomeViewModel()
         vm?.bindResultToViewController = { [weak self] in
-            self?.homeCollectionView.reloadData()
+            DispatchQueue.main.async {
+                self?.homeCollectionView.reloadData()
+            }
         }
         
     }
     
-    func getExperinces() {
-        vm?.getExperinces()
+    func updateFavouriteCount(experienceID: String) {
+        guard let vm = vm else {return}
+        if let index = vm.recommended.firstIndex(where: { $0.id == experienceID }) {
+            vm.recommended[index].likesNumber = vm.recommended[index].likesNumber + 1
+        }
+        if let index = vm.recent.firstIndex(where: { $0.id == experienceID }) {
+            vm.recent[index].likesNumber = vm.recent[index].likesNumber + 1
+        }
     }
     
     func setupViewUI() {
@@ -43,39 +54,29 @@ class ViewController: UIViewController, UICollectionViewDelegate, UICollectionVi
             }
         }
         
-        // Initialize UICollectionView
         homeCollectionView = UICollectionView(frame: self.view.bounds, collectionViewLayout: layout)
         homeCollectionView.backgroundColor = .white
         
-        // Register the cell and header view
         homeCollectionView.register(DestinationCell.self, forCellWithReuseIdentifier: "Cell")
         homeCollectionView.register(LoadingCell.self, forCellWithReuseIdentifier: "LoadingCell")
         homeCollectionView.register(SectionHeaderView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: SectionHeaderView.reuseIdentifier)
         
-        // Set the data source and delegate
         homeCollectionView.dataSource = self
         homeCollectionView.delegate = self
         
-        // Setup the title and subtitle labels
         titleLabel = UILabel.create(text: "Welcome!", font: .boldSystemFont(ofSize: 22))
         subtitleLabel = UILabel.create(text: "Now you can explore any experience in 360 degrees and get all the details about it all in one place.", font: .systemFont(ofSize: 14))
         
-        // Setup topbar
         topBar = TopBarView()
         topBar.searchBar.delegate = self
         
-        // Add the views to the view hierarchy
         view.addSubview(titleLabel)
         view.addSubview(subtitleLabel)
         view.addSubview(homeCollectionView)
         view.addSubview(topBar)
         
-        titleLabel.translatesAutoresizingMaskIntoConstraints = false
-        subtitleLabel.translatesAutoresizingMaskIntoConstraints = false
         homeCollectionView.translatesAutoresizingMaskIntoConstraints = false
-        topBar.translatesAutoresizingMaskIntoConstraints = false
         
-        // Apply Auto Layout constraints
         NSLayoutConstraint.activate([
             topBar.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
             topBar.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 15),
@@ -119,12 +120,10 @@ class ViewController: UIViewController, UICollectionViewDelegate, UICollectionVi
 
     func drawHeader() -> NSCollectionLayoutBoundarySupplementaryItem{
         let footerHeaderSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1),heightDimension: .absolute(searchFlag ? 0 : 40))
-        
         let header = NSCollectionLayoutBoundarySupplementaryItem(
             layoutSize: footerHeaderSize,
                         elementKind: UICollectionView.elementKindSectionHeader,
                         alignment: .top)
-        
         return header
     }
     
@@ -156,14 +155,10 @@ class ViewController: UIViewController, UICollectionViewDelegate, UICollectionVi
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         switch section {
         case 0:
-            if searchFlag {
-                return 0
-            }
+            if searchFlag { return 0 }
             return vm?.recommended.count == 0 ? 1 :  (vm?.recommended.count ?? 0)
         case 1:
-            if searchFlag {
-                return filteredExperinces.count
-            }
+            if searchFlag { return filteredExperinces.count }
             return vm?.recent.count == 0 ? 1 :  (vm?.recent.count ?? 0)
         default:
             return 0
@@ -176,88 +171,25 @@ class ViewController: UIViewController, UICollectionViewDelegate, UICollectionVi
         
         cell.conroller = self
         
+        let experience: Experience?
+        
         switch indexPath.section {
         case 0:
-            if !(vm?.recommended ?? []).isEmpty {
-                cell.destinationName.text = vm?.recommended[indexPath.row].title
-                cell.favouriteCount.text = vm?.recommended[indexPath.row].likesNumber.description
-                cell.destinationImageView.viewsCountLabel.text = vm?.recommended[indexPath.row].viewsNumber.description
-                
-                vm?.getCoverPhoto(experince: (vm?.recommended[indexPath.row])!, completion: { data in
-                    cell.destinationImageView.destinationImageView.image = UIImage(data: data)
-                })
-                
-                cell.experinceID = vm?.recommended[indexPath.row].id
-                
-                if UserDefaults.standard.value(forKey: (vm?.recommended[indexPath.row].id)!) != nil {
-                    cell.favouriteButton.imageView?.image = UIImage(systemName: "heart.fill")
-                } else {
-                    cell.favouriteButton.imageView?.image = UIImage(systemName: "heart")
-                }
-                
-                cell.destinationImageView.recommenedBanner.isHidden = false
-            } else {
-                return loadingCell
-            }
+            guard !(vm?.recommended ?? []).isEmpty else { return loadingCell }
+            experience = vm?.recommended[indexPath.row]
         case 1:
             if searchFlag {
-                 if !filteredExperinces.isEmpty {
-                    cell.destinationName.text = filteredExperinces[indexPath.row].title
-                    cell.favouriteCount.text = filteredExperinces[indexPath.row].likesNumber.description
-                    cell.destinationImageView.viewsCountLabel.text = filteredExperinces[indexPath.row].viewsNumber.description
-                    
-                    vm?.getCoverPhoto(experince: filteredExperinces[indexPath.row], completion: { data in
-                        cell.destinationImageView.destinationImageView.image = UIImage(data: data)
-                    })
-                    
-                     if filteredExperinces[indexPath.row].recommended == 1 {
-                         cell.destinationImageView.recommenedBanner.isHidden = false
-                     } else {
-                         cell.destinationImageView.recommenedBanner.isHidden = true
-                     }
-                     
-                     if UserDefaults.standard.value(forKey: filteredExperinces[indexPath.row].id) != nil {
-                         cell.favouriteButton.imageView?.image = UIImage(systemName: "heart.fill")
-                     } else {
-                         cell.favouriteButton.imageView?.image = UIImage(systemName: "heart")
-                     }
-                     
-                     cell.experinceID = filteredExperinces[indexPath.row].id
-                     
-                     return cell
-                } else {
-                    return loadingCell
-                }
-            }
-            
-            if !(vm?.recent ?? []).isEmpty {
-            cell.destinationName.text = vm?.recent[indexPath.row].title
-            cell.favouriteCount.text = vm?.recent[indexPath.row].likesNumber.description
-            cell.destinationImageView.viewsCountLabel.text = vm?.recent[indexPath.row].viewsNumber.description
-            
-            vm?.getCoverPhoto(experince: (vm?.recent[indexPath.row])!, completion: { data in
-                cell.destinationImageView.destinationImageView.image = UIImage(data: data)
-            })
-            
-            if vm?.recent[indexPath.row].recommended == 1 {
-                cell.destinationImageView.recommenedBanner.isHidden = false
+                guard !filteredExperinces.isEmpty else { return loadingCell }
+                experience = filteredExperinces[indexPath.row]
             } else {
-                cell.destinationImageView.recommenedBanner.isHidden = true
+                guard !(vm?.recent ?? []).isEmpty else { return loadingCell }
+                experience = vm?.recent[indexPath.row]
             }
-                
-            if UserDefaults.standard.value(forKey: (vm?.recent[indexPath.row].id)!) != nil {
-                cell.favouriteButton.imageView?.image = UIImage(systemName: "heart.fill")
-            } else {
-                cell.favouriteButton.imageView?.image = UIImage(systemName: "heart")
-            }
-                
-                cell.experinceID = vm?.recent[indexPath.row].id
-        } else {
+        default:
             return loadingCell
         }
-        default:
-            break
-        }
+        
+        cell.experince = experience
         
         return cell
     }
@@ -266,14 +198,9 @@ class ViewController: UIViewController, UICollectionViewDelegate, UICollectionVi
         homeCollectionView.reloadData()
     }
     
-    var filteredExperinces: [Experience] = []
-    var searchFlag: Bool = false
-    
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
         if searchText.isEmpty {
             filteredExperinces = vm?.recent ?? []
-            titleLabel.isHidden = false
-            subtitleLabel.isHidden = false
             searchFlag = false
             } else {
                 searchFlag = true

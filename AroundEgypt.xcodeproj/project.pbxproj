@@ -30,6 +30,7 @@
 		F42D42122CE25D3900AE21B2 /* CustomIndicatorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F42D42112CE25D3900AE21B2 /* CustomIndicatorView.swift */; };
 		F42D42142CE2695A00AE21B2 /* LoadingCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F42D42132CE2695A00AE21B2 /* LoadingCell.swift */; };
 		F42D42162CE2788200AE21B2 /* LocalFileService.swift in Sources */ = {isa = PBXBuildFile; fileRef = F42D42152CE2788200AE21B2 /* LocalFileService.swift */; };
+		F42D42182CE363AD00AE21B2 /* DestinationCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F42D42172CE363AD00AE21B2 /* DestinationCellViewModel.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -77,6 +78,7 @@
 		F42D42112CE25D3900AE21B2 /* CustomIndicatorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomIndicatorView.swift; sourceTree = "<group>"; };
 		F42D42132CE2695A00AE21B2 /* LoadingCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingCell.swift; sourceTree = "<group>"; };
 		F42D42152CE2788200AE21B2 /* LocalFileService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalFileService.swift; sourceTree = "<group>"; };
+		F42D42172CE363AD00AE21B2 /* DestinationCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DestinationCellViewModel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -181,6 +183,7 @@
 			isa = PBXGroup;
 			children = (
 				F42D420C2CE2415200AE21B2 /* HomeViewModel.swift */,
+				F42D42172CE363AD00AE21B2 /* DestinationCellViewModel.swift */,
 			);
 			path = ViewModel;
 			sourceTree = "<group>";
@@ -367,6 +370,7 @@
 				F42D420F2CE24CF900AE21B2 /* APIHandler.swift in Sources */,
 				F42D41C32CE0FD9800AE21B2 /* AppDelegate.swift in Sources */,
 				F42D42142CE2695A00AE21B2 /* LoadingCell.swift in Sources */,
+				F42D42182CE363AD00AE21B2 /* DestinationCellViewModel.swift in Sources */,
 				F42D420D2CE2415200AE21B2 /* HomeViewModel.swift in Sources */,
 				F42D41FC2CE1741A00AE21B2 /* DestinationImageView.swift in Sources */,
 				F42D41CD2CE0FD9800AE21B2 /* AroundEgypt.xcdatamodeld in Sources */,

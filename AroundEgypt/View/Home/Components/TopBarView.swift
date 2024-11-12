@@ -8,7 +8,7 @@
 import Foundation
 import UIKit
 
-class TopBarView: UIView {
+class TopBarView: UIView{
 
     var leftButton: UIButton!
     var rightButton: UIButton!
@@ -29,11 +29,9 @@ class TopBarView: UIView {
 
     private func setupUI() {
         leftButton = UIButton.create(image: UIImage(systemName: "line.3.horizontal"), tintColor: .black)
-//        leftButton.addTarget(self, action: #selector(leftButtonTapped), for: .touchUpInside)
         addSubview(leftButton)
 
         rightButton = UIButton.create(image: UIImage(systemName: "slider.horizontal.3"), tintColor: .black)
-//        rightButton.addTarget(self, action: #selector(rightButtonTapped), for: .touchUpInside)
         addSubview(rightButton)
 
         searchBar = UISearchBar()
@@ -41,6 +39,8 @@ class TopBarView: UIView {
         searchBar.placeholder = "Try \"Luxor\" "
         searchBar.searchBarStyle = .minimal
         addSubview(searchBar)
+        
+        self.translatesAutoresizingMaskIntoConstraints = false
 
         NSLayoutConstraint.activate([
             leftButton.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 10),
@@ -54,15 +54,5 @@ class TopBarView: UIView {
             searchBar.centerYAnchor.constraint(equalTo: self.centerYAnchor),
             searchBar.heightAnchor.constraint(equalToConstant: 30)
         ])
-    }
-
-    // Action for the left button
-    @objc private func leftButtonTapped() {
-        leftButtonAction?()
-    }
-
-    // Action for the right button
-    @objc private func rightButtonTapped() {
-        rightButtonAction?()
     }
 }

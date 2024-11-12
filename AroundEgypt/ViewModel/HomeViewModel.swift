@@ -10,8 +10,6 @@ import UIKit
 
 class HomeViewModel {
     private let networkService: NetworkServiceProtocol
-    private let fileSevice: LocalFileService
-    private let folderName: String
     
     var bindResultToViewController: () -> Void = {}
     
@@ -29,8 +27,6 @@ class HomeViewModel {
     
     init () {
         networkService = NetworkSevice.instance
-        fileSevice = LocalFileService.instance
-        folderName = "experince_images"
         getExperinces()
     }
     
@@ -64,24 +60,5 @@ class HomeViewModel {
             }
         }
     }
-    
-    func getCoverPhoto(experince: Experience, completion: @escaping (Data) -> Void) {
-        if let savedExperinceImage = fileSevice.getImage(folderName: folderName, imageName: experince.id) {
-            completion(savedExperinceImage.pngData()!)
-            return
-        } else {
-            networkService.fetchData(url: experince.coverPhoto, method: .get, type: Data.self, decodResult: false) { result in
-                switch result {
-                case .success(let data):
-                    DispatchQueue.main.async { [weak self] in
-                        completion(data)
-                        guard let self = self, let image = UIImage(data: data)  else {return}
-                        self.fileSevice.saveImage(image: image, folderName: self.folderName, imageName: experince.id)
-                    }
-                case .failure(let error):
-                    print(error.localizedDescription)
-                }
-            }
-        }
-    }
+
 }

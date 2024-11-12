@@ -9,7 +9,6 @@ import Foundation
 import UIKit
 
 class LoadingCell: UICollectionViewCell {
-    // Loading Indicator View (covers the entire cell)
     private var loadingIndicatorView: UIActivityIndicatorView!
     
     override init(frame: CGRect) {
@@ -22,7 +21,6 @@ class LoadingCell: UICollectionViewCell {
     }
     
     private func setupUI() {
-        // Initialize the activity indicator (loading indicator)
         loadingIndicatorView = UIActivityIndicatorView(style: .large)
         loadingIndicatorView.color = .gray
         loadingIndicatorView.translatesAutoresizingMaskIntoConstraints = false

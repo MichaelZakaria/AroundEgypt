@@ -22,7 +22,7 @@ struct Experience: Codable{
     let coverPhoto: String
     let description: String
     let viewsNumber: Int
-    let likesNumber: Int
+    var likesNumber: Int
     let recommended: Int
     let isLiked: Int?
     
