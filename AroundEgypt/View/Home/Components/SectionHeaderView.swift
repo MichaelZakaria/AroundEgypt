@@ -29,7 +29,7 @@ class SectionHeaderView: UICollectionReusableView {
         label.translatesAutoresizingMaskIntoConstraints = false
         label.textAlignment = .center
         label.font = UIFont.boldSystemFont(ofSize: 22)
-        label.textColor = .black
+        //label.textColor = .black
         
         addSubview(label)
         

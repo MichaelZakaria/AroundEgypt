@@ -28,10 +28,10 @@ class TopBarView: UIView{
     }
 
     private func setupUI() {
-        leftButton = UIButton.create(image: UIImage(systemName: "line.3.horizontal"), tintColor: .black)
+        leftButton = UIButton.create(image: UIImage(systemName: "line.3.horizontal"), tintColor: .aganistBacground)
         addSubview(leftButton)
 
-        rightButton = UIButton.create(image: UIImage(systemName: "slider.horizontal.3"), tintColor: .black)
+        rightButton = UIButton.create(image: UIImage(systemName: "slider.horizontal.3"), tintColor: .aganistBacground)
         addSubview(rightButton)
 
         searchBar = UISearchBar()

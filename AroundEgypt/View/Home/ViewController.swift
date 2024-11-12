@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import SwiftUI
 
 class ViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, UISearchBarDelegate, UISearchResultsUpdating, UpdateFavouriteCountProtocol {
     
@@ -30,8 +31,14 @@ class ViewController: UIViewController, UICollectionViewDelegate, UICollectionVi
             }
         }
         
+        self.hideKeyboardWhenTappedAround()
     }
     
+    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+        //view.endEditing(true)
+        searchBar.resignFirstResponder()
+    }
+
     func updateFavouriteCount(experienceID: String) {
         guard let vm = vm else {return}
         if let index = vm.recommended.firstIndex(where: { $0.id == experienceID }) {
@@ -43,6 +50,8 @@ class ViewController: UIViewController, UICollectionViewDelegate, UICollectionVi
     }
     
     func setupViewUI() {
+        //view.backgroundColor = .white
+        
         let layout = UICollectionViewCompositionalLayout{ indexPath, enviroment in
             switch indexPath {
             case 0:
@@ -55,7 +64,7 @@ class ViewController: UIViewController, UICollectionViewDelegate, UICollectionVi
         }
         
         homeCollectionView = UICollectionView(frame: self.view.bounds, collectionViewLayout: layout)
-        homeCollectionView.backgroundColor = .white
+        //homeCollectionView.backgroundColor = .white
         
         homeCollectionView.register(DestinationCell.self, forCellWithReuseIdentifier: "Cell")
         homeCollectionView.register(LoadingCell.self, forCellWithReuseIdentifier: "LoadingCell")
@@ -192,6 +201,29 @@ class ViewController: UIViewController, UICollectionViewDelegate, UICollectionVi
         cell.experince = experience
         
         return cell
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        
+        let experience: Experience?
+        
+        switch indexPath.section {
+        case 0:
+            experience = vm?.recommended[indexPath.row]
+        case 1:
+            if searchFlag {
+                experience = filteredExperinces[indexPath.row]
+            } else {
+                experience = vm?.recent[indexPath.row]
+            }
+        default:
+            experience = Experience(id: "", title: "", coverPhoto: "", description: "", viewsNumber: 0, likesNumber: 0, recommended: 0, isLiked: 0, city: City(name: ""))
+        }
+        
+        let experienceDetails = ExperienceDetailsView(experience: experience!, conroller: self)
+        let hostingController = UIHostingController(rootView: experienceDetails)
+        
+        present(hostingController, animated: true)
     }
     
     func updateSearchResults(for searchController: UISearchController) {

@@ -31,6 +31,9 @@
 		F42D42142CE2695A00AE21B2 /* LoadingCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F42D42132CE2695A00AE21B2 /* LoadingCell.swift */; };
 		F42D42162CE2788200AE21B2 /* LocalFileService.swift in Sources */ = {isa = PBXBuildFile; fileRef = F42D42152CE2788200AE21B2 /* LocalFileService.swift */; };
 		F42D42182CE363AD00AE21B2 /* DestinationCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F42D42172CE363AD00AE21B2 /* DestinationCellViewModel.swift */; };
+		F42D421B2CE378C500AE21B2 /* ExperienceDetailsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F42D421A2CE378C500AE21B2 /* ExperienceDetailsView.swift */; };
+		F42D421E2CE38CBB00AE21B2 /* TopImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F42D421D2CE38CBB00AE21B2 /* TopImageView.swift */; };
+		F42D42202CE39EC600AE21B2 /* MideaView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F42D421F2CE39EC600AE21B2 /* MideaView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -79,6 +82,9 @@
 		F42D42132CE2695A00AE21B2 /* LoadingCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingCell.swift; sourceTree = "<group>"; };
 		F42D42152CE2788200AE21B2 /* LocalFileService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalFileService.swift; sourceTree = "<group>"; };
 		F42D42172CE363AD00AE21B2 /* DestinationCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DestinationCellViewModel.swift; sourceTree = "<group>"; };
+		F42D421A2CE378C500AE21B2 /* ExperienceDetailsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExperienceDetailsView.swift; sourceTree = "<group>"; };
+		F42D421D2CE38CBB00AE21B2 /* TopImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TopImageView.swift; sourceTree = "<group>"; };
+		F42D421F2CE39EC600AE21B2 /* MideaView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MideaView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -174,6 +180,7 @@
 		F42D42022CE21D5A00AE21B2 /* View */ = {
 			isa = PBXGroup;
 			children = (
+				F42D42192CE3788D00AE21B2 /* ExperienceDetails */,
 				F42D42042CE21DDB00AE21B2 /* Home */,
 			);
 			path = View;
@@ -226,6 +233,24 @@
 				F42D42112CE25D3900AE21B2 /* CustomIndicatorView.swift */,
 			);
 			path = Utilities;
+			sourceTree = "<group>";
+		};
+		F42D42192CE3788D00AE21B2 /* ExperienceDetails */ = {
+			isa = PBXGroup;
+			children = (
+				F42D421A2CE378C500AE21B2 /* ExperienceDetailsView.swift */,
+				F42D421C2CE38C6500AE21B2 /* Components */,
+			);
+			path = ExperienceDetails;
+			sourceTree = "<group>";
+		};
+		F42D421C2CE38C6500AE21B2 /* Components */ = {
+			isa = PBXGroup;
+			children = (
+				F42D421D2CE38CBB00AE21B2 /* TopImageView.swift */,
+				F42D421F2CE39EC600AE21B2 /* MideaView.swift */,
+			);
+			path = Components;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -361,7 +386,9 @@
 			files = (
 				F42D42002CE216F600AE21B2 /* RecommendedBannerView.swift in Sources */,
 				F42D42082CE23AB300AE21B2 /* Experience.swift in Sources */,
+				F42D421E2CE38CBB00AE21B2 /* TopImageView.swift in Sources */,
 				F42D42122CE25D3900AE21B2 /* CustomIndicatorView.swift in Sources */,
+				F42D42202CE39EC600AE21B2 /* MideaView.swift in Sources */,
 				F42D41F62CE1494500AE21B2 /* TopBarView.swift in Sources */,
 				F42D420B2CE23CCA00AE21B2 /* NetworkSevice.swift in Sources */,
 				F42D41F82CE15BC100AE21B2 /* SectionHeaderView.swift in Sources */,
@@ -375,6 +402,7 @@
 				F42D41FC2CE1741A00AE21B2 /* DestinationImageView.swift in Sources */,
 				F42D41CD2CE0FD9800AE21B2 /* AroundEgypt.xcdatamodeld in Sources */,
 				F42D41C52CE0FD9800AE21B2 /* SceneDelegate.swift in Sources */,
+				F42D421B2CE378C500AE21B2 /* ExperienceDetailsView.swift in Sources */,
 				F42D41FE2CE20FB100AE21B2 /* Extentions.swift in Sources */,
 				F42D42162CE2788200AE21B2 /* LocalFileService.swift in Sources */,
 			);

@@ -40,7 +40,7 @@ extension UIButton {
 
 // UILabel extension for reusable creation
 extension UILabel {
-    static func create(text: String, font: UIFont = .systemFont(ofSize: 14), color: UIColor = .black, maxLines: Int = 0) -> UILabel {
+    static func create(text: String, font: UIFont = .systemFont(ofSize: 14), color: UIColor = .aganistBacground, maxLines: Int = 0) -> UILabel {
         let label = UILabel()
         label.text = text
         label.font = font
@@ -50,3 +50,19 @@ extension UILabel {
         return label
     }
 }
+
+
+// UIViewController extention
+extension UIViewController {
+    func hideKeyboardWhenTappedAround() {
+        let tap = UITapGestureRecognizer(target: self, action: #selector(UIViewController.dismissKeyboard))
+        tap.cancelsTouchesInView = false
+        view.addGestureRecognizer(tap)
+    }
+    
+    @objc func dismissKeyboard() {
+        view.endEditing(true)
+    }
+    
+}
+
