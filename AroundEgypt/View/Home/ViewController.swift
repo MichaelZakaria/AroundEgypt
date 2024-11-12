@@ -167,7 +167,7 @@ class ViewController: UIViewController, UICollectionViewDelegate, UICollectionVi
             if searchFlag { return 0 }
             return vm?.recommended?.count == 0 ? 1 :  (vm?.recommended?.count ?? 1)
         case 1:
-            if searchFlag { return filteredExperinces.count }
+            if searchFlag { return filteredExperinces.count == 0 ? 1 : filteredExperinces.count }
             return vm?.recent?.count == 0 ? 1 :  (vm?.recent?.count ?? 1)
         default:
             return 0

@@ -15,7 +15,7 @@ struct ExperienceDetailsView: View {
         VStack {
             TopImageView(experience: experience)
                 .frame(height: 285)
-                .padding(.bottom)
+                .padding(.bottom, 2)
             MideaView(experience: experience, conroller: conroller)
                 .padding(.horizontal)
             Divider()

@@ -17,7 +17,7 @@ struct TopImageView: View {
                       ?? .background)
                     .resizable()
                     .scaledToFill()
-                
+                    .clipped()
                     .overlay(
                     LinearGradient(
                         gradient: Gradient(colors: [Color.clear,     Color.black.opacity(0.5)]),
@@ -37,6 +37,7 @@ struct TopImageView: View {
                 .cornerRadius(10)
             }
             .frame(height: 285)
+            .clipped()
             
             HStack {
                 Image(systemName: "eye.fill")
