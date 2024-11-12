@@ -8,7 +8,6 @@
 import Foundation
 import UIKit
 
-// UIImageView extension for reusable creation
 extension UIImageView {
     static func create(image: UIImage?, contentMode: UIView.ContentMode = .scaleAspectFit, cornerRaduis: CGFloat = 0) -> UIImageView {
         let imageView = UIImageView(image: image)
@@ -22,7 +21,6 @@ extension UIImageView {
     }
 }
 
-// UIButton extension for reusable creation
 extension UIButton {
     static func create(image: UIImage?, title: String? = nil, tintColor: UIColor = .white) -> UIButton {
         let button = UIButton()
@@ -38,7 +36,6 @@ extension UIButton {
     }
 }
 
-// UILabel extension for reusable creation
 extension UILabel {
     static func create(text: String, font: UIFont = .systemFont(ofSize: 14), color: UIColor = .aganistBacground, maxLines: Int = 0) -> UILabel {
         let label = UILabel()
@@ -52,7 +49,6 @@ extension UILabel {
 }
 
 
-// UIViewController extention
 extension UIViewController {
     func hideKeyboardWhenTappedAround() {
         let tap = UITapGestureRecognizer(target: self, action: #selector(UIViewController.dismissKeyboard))

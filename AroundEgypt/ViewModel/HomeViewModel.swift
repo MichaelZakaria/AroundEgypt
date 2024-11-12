@@ -9,8 +9,6 @@ import Foundation
 import UIKit
 
 class HomeViewModel {
-    private let networkService: NetworkServiceProtocol
-    
     var bindResultToViewController: () -> Void = {}
     
     var recommended: [Experience] = [] {
@@ -26,7 +24,6 @@ class HomeViewModel {
     }
     
     init () {
-        networkService = NetworkSevice.instance
         getExperinces()
     }
     
@@ -36,7 +33,7 @@ class HomeViewModel {
     }
     
     private func getRecommendedExperinces() {
-        networkService.fetchData(url: APIHandler.getExperincesURL(.recommendedExperiences), method: .get, type: ExperiencesResponse.self, decodResult: true) { result in
+        NetworkSevice.instance.request(url: APIHandler.requestURL(.recommendedExperiences), method: .get, type: ExperiencesResponse.self, decodResult: true) { result in
             switch result {
             case .success(let response):
                 DispatchQueue.main.async { [weak self] in
@@ -49,7 +46,7 @@ class HomeViewModel {
     }
     
     private func getRecentExperinces() {
-        networkService.fetchData(url: APIHandler.getExperincesURL(.recentExperiences), method: .get, type: ExperiencesResponse.self, decodResult: true) { result in
+        NetworkSevice.instance.request(url: APIHandler.requestURL(.recentExperiences), method: .get, type: ExperiencesResponse.self, decodResult: true) { result in
             switch result {
             case .success(let response):
                 DispatchQueue.main.async { [weak self] in

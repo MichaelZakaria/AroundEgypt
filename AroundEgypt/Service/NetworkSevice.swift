@@ -8,16 +8,15 @@
 import Foundation
 
 protocol NetworkServiceProtocol {
-    func fetchData<T: Codable>(url: String, method: APIHandler.Method, type: T.Type, decodResult: Bool, handler: @escaping (Result<T, Error>) -> Void)
+    func request<T: Codable>(url: String, method: APIHandler.Method, type: T.Type, decodResult: Bool, handler: @escaping (Result<T, Error>) -> Void)
 }
 
 class NetworkSevice: NetworkServiceProtocol {
     static let instance = NetworkSevice()
+    private init () {}
     
     // Cache Key for UserDefaults
     private let cacheKeyPrefix = "cached_"
-    
-    private init () {}
     
     // Save data to UserDefaults cache
     private func saveToCache(data: Data, for url: String) {
@@ -36,15 +35,12 @@ class NetworkSevice: NetworkServiceProtocol {
         return "\(cacheKeyPrefix)\(url)"
     }
     
-    func fetchData<T>(url: String, method: APIHandler.Method, type: T.Type, decodResult: Bool, handler: @escaping (Result<T, any Error>) -> Void) where T : Decodable, T : Encodable {
+    func request<T>(url: String, method: APIHandler.Method, type: T.Type, decodResult: Bool, handler: @escaping (Result<T, any Error>) -> Void) where T : Decodable, T : Encodable {
         
         let url = URL(string: url)!
-        
         var request = URLRequest(url: url)
         request.httpMethod = method.rawValue
-        
         let session = URLSession(configuration: .default)
-        
         let task = session.dataTask(with: request) { data, response, error in
             // Check for errors
             if let error = error {

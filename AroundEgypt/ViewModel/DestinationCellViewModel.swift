@@ -24,7 +24,7 @@ class DestinationCellViewModel {
             completion(savedExperinceImage.pngData()!)
             return
         } else {
-            networkService.fetchData(url: experince.coverPhoto, method: .get, type: Data.self, decodResult: false) { result in
+            networkService.request(url: experince.coverPhoto, method: .get, type: Data.self, decodResult: false) { result in
                 switch result {
                 case .success(let data):
                     DispatchQueue.main.async { [weak self] in
@@ -40,7 +40,7 @@ class DestinationCellViewModel {
     }
     
     func postLike(id: String, completion: @escaping () -> Void) {
-        NetworkSevice.instance.fetchData(url: APIHandler.getExperincesURL(.likeExperince(id: id)), method: .post, type: Data.self, decodResult: false) { result in
+        NetworkSevice.instance.request(url: APIHandler.requestURL(.likeExperince(id: id)), method: .post, type: Data.self, decodResult: false) { result in
             switch result {
             case .success(_):
                 UserDefaults.standard.setValue(true, forKey: id)

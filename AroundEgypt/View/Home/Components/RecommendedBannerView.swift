@@ -9,12 +9,10 @@ import Foundation
 import UIKit
 
 class RecommendedBannerView: UIView {
-            
-    // UI Elements
+        
     private var starIconImageView: UIImageView!
     private var infoLabel: UILabel!
     
-    // Initializer
     override init(frame: CGRect) {
         super.init(frame: frame)
         setupUI()
@@ -25,30 +23,24 @@ class RecommendedBannerView: UIView {
         setupUI()
     }
     
-    // UI Setup
     private func setupUI() {
-        // Background with rounded corners
         self.backgroundColor = UIColor.black.withAlphaComponent(0.5) // Light transparent grey color
         self.layer.cornerRadius = 10
         self.clipsToBounds = true
         
-        // Star Icon (Yellow)
         starIconImageView = UIImageView(image: UIImage(systemName: "star.fill"))
         starIconImageView.tintColor = .myTeal
         starIconImageView.translatesAutoresizingMaskIntoConstraints = false
         
-        // Label
         infoLabel = UILabel()
         infoLabel.text = "RECOMMENDED"
         infoLabel.font =  .boldSystemFont(ofSize: 10)
         infoLabel.textColor = .white
         infoLabel.translatesAutoresizingMaskIntoConstraints = false
         
-        // Add subviews
         addSubview(starIconImageView)
         addSubview(infoLabel)
         
-        // Set up constraints
         setupConstraints()
     }
     

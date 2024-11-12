@@ -35,7 +35,6 @@ class ViewController: UIViewController, UICollectionViewDelegate, UICollectionVi
     }
     
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
-        //view.endEditing(true)
         searchBar.resignFirstResponder()
     }
 
@@ -50,8 +49,6 @@ class ViewController: UIViewController, UICollectionViewDelegate, UICollectionVi
     }
     
     func setupViewUI() {
-        //view.backgroundColor = .white
-        
         let layout = UICollectionViewCompositionalLayout{ indexPath, enviroment in
             switch indexPath {
             case 0:
@@ -64,7 +61,6 @@ class ViewController: UIViewController, UICollectionViewDelegate, UICollectionVi
         }
         
         homeCollectionView = UICollectionView(frame: self.view.bounds, collectionViewLayout: layout)
-        //homeCollectionView.backgroundColor = .white
         
         homeCollectionView.register(DestinationCell.self, forCellWithReuseIdentifier: "Cell")
         homeCollectionView.register(LoadingCell.self, forCellWithReuseIdentifier: "LoadingCell")

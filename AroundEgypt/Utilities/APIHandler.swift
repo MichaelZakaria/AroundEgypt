@@ -8,7 +8,7 @@
 import Foundation
 
 class APIHandler {
-    static let defaultURL = "aroundegypt.34ml.com"
+    static let apiURL = "aroundegypt.34ml.com"
     
     enum EndPoints {
         case recommendedExperiences
@@ -44,7 +44,7 @@ class APIHandler {
         case api_version = "v2"
     }
     
-    static func getExperincesURL(_ endpoint: EndPoints) -> String {
-        return "\(Completions.ssl.rawValue)\(defaultURL)/api/\(Completions.api_version.rawValue)\(endpoint.rawValue)"
+    static func requestURL(_ endpoint: EndPoints) -> String {
+        return "\(Completions.ssl.rawValue)\(apiURL)/api/\(Completions.api_version.rawValue)\(endpoint.rawValue)"
     }
 }

@@ -16,7 +16,7 @@ struct ExperienceDetailsView: View {
             TopImageView(experience: experience)
                 .frame(height: 285)
                 .padding(.bottom)
-            MideaView(experience: experience, conroller: conroller!)
+            MideaView(experience: experience, conroller: conroller)
                 .padding(.horizontal)
             Divider()
                 .padding()
