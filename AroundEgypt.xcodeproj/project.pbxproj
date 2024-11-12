@@ -34,6 +34,7 @@
 		F42D421E2CE38CBB00AE21B2 /* TopImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F42D421D2CE38CBB00AE21B2 /* TopImageView.swift */; };
 		F42D42202CE39EC600AE21B2 /* MideaView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F42D421F2CE39EC600AE21B2 /* MideaView.swift */; };
 		F42D42242CE3FDF300AE21B2 /* MideaViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F42D42232CE3FDF300AE21B2 /* MideaViewModel.swift */; };
+		F42D42262CE4014E00AE21B2 /* EmptyCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F42D42252CE4014E00AE21B2 /* EmptyCell.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -85,6 +86,7 @@
 		F42D421D2CE38CBB00AE21B2 /* TopImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TopImageView.swift; sourceTree = "<group>"; };
 		F42D421F2CE39EC600AE21B2 /* MideaView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MideaView.swift; sourceTree = "<group>"; };
 		F42D42232CE3FDF300AE21B2 /* MideaViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MideaViewModel.swift; sourceTree = "<group>"; };
+		F42D42252CE4014E00AE21B2 /* EmptyCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmptyCell.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -214,6 +216,7 @@
 				F42D41F52CE1494500AE21B2 /* TopBarView.swift */,
 				F42D41F72CE15BC100AE21B2 /* SectionHeaderView.swift */,
 				F42D42132CE2695A00AE21B2 /* LoadingCell.swift */,
+				F42D42252CE4014E00AE21B2 /* EmptyCell.swift */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -401,6 +404,7 @@
 				F42D41FC2CE1741A00AE21B2 /* DestinationImageView.swift in Sources */,
 				F42D41CD2CE0FD9800AE21B2 /* AroundEgypt.xcdatamodeld in Sources */,
 				F42D41C52CE0FD9800AE21B2 /* SceneDelegate.swift in Sources */,
+				F42D42262CE4014E00AE21B2 /* EmptyCell.swift in Sources */,
 				F42D421B2CE378C500AE21B2 /* ExperienceDetailsView.swift in Sources */,
 				F42D41FE2CE20FB100AE21B2 /* Extentions.swift in Sources */,
 				F42D42242CE3FDF300AE21B2 /* MideaViewModel.swift in Sources */,

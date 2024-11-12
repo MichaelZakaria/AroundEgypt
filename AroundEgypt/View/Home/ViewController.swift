@@ -40,11 +40,14 @@ class ViewController: UIViewController, UICollectionViewDelegate, UICollectionVi
 
     func updateFavouriteCount(experienceID: String) {
         guard let vm = vm else {return}
-        if let index = vm.recommended.firstIndex(where: { $0.id == experienceID }) {
-            vm.recommended[index].likesNumber = vm.recommended[index].likesNumber + 1
+        if let index = vm.recommended?.firstIndex(where: { $0.id == experienceID }) {
+            vm.recommended![index].likesNumber = vm.recommended![index].likesNumber + 1
         }
-        if let index = vm.recent.firstIndex(where: { $0.id == experienceID }) {
-            vm.recent[index].likesNumber = vm.recent[index].likesNumber + 1
+        if let index = vm.recent?.firstIndex(where: { $0.id == experienceID }) {
+            vm.recent![index].likesNumber = vm.recent![index].likesNumber + 1
+        }
+        if let index = filteredExperinces.firstIndex(where: { $0.id == experienceID }) {
+            filteredExperinces[index].likesNumber = filteredExperinces[index].likesNumber + 1
         }
     }
     
@@ -64,6 +67,7 @@ class ViewController: UIViewController, UICollectionViewDelegate, UICollectionVi
         
         homeCollectionView.register(DestinationCell.self, forCellWithReuseIdentifier: "Cell")
         homeCollectionView.register(LoadingCell.self, forCellWithReuseIdentifier: "LoadingCell")
+        homeCollectionView.register(EmptyCell.self, forCellWithReuseIdentifier: "EmptyCell")
         homeCollectionView.register(SectionHeaderView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: SectionHeaderView.reuseIdentifier)
         
         homeCollectionView.dataSource = self
@@ -161,10 +165,10 @@ class ViewController: UIViewController, UICollectionViewDelegate, UICollectionVi
         switch section {
         case 0:
             if searchFlag { return 0 }
-            return vm?.recommended.count == 0 ? 1 :  (vm?.recommended.count ?? 0)
+            return vm?.recommended?.count == 0 ? 1 :  (vm?.recommended?.count ?? 1)
         case 1:
             if searchFlag { return filteredExperinces.count }
-            return vm?.recent.count == 0 ? 1 :  (vm?.recent.count ?? 0)
+            return vm?.recent?.count == 0 ? 1 :  (vm?.recent?.count ?? 1)
         default:
             return 0
         }
@@ -172,6 +176,7 @@ class ViewController: UIViewController, UICollectionViewDelegate, UICollectionVi
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let loadingCell = collectionView.dequeueReusableCell(withReuseIdentifier: "LoadingCell", for: indexPath) as! LoadingCell
+        let emptyCell = collectionView.dequeueReusableCell(withReuseIdentifier: "EmptyCell", for: indexPath) as! EmptyCell
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "Cell", for: indexPath) as! DestinationCell
         
         cell.conroller = self
@@ -180,18 +185,20 @@ class ViewController: UIViewController, UICollectionViewDelegate, UICollectionVi
         
         switch indexPath.section {
         case 0:
-            guard !(vm?.recommended ?? []).isEmpty else { return loadingCell }
-            experience = vm?.recommended[indexPath.row]
+            guard let recommended = vm?.recommended else { return loadingCell }
+            if recommended.isEmpty { return emptyCell }
+            experience = recommended[indexPath.row]
         case 1:
             if searchFlag {
-                guard !filteredExperinces.isEmpty else { return loadingCell }
+                guard filteredExperinces.first != nil else { return emptyCell }
                 experience = filteredExperinces[indexPath.row]
             } else {
-                guard !(vm?.recent ?? []).isEmpty else { return loadingCell }
-                experience = vm?.recent[indexPath.row]
+            guard let recent = vm?.recent else { return loadingCell }
+            if recent.isEmpty { return emptyCell }
+            experience = recent[indexPath.row]
             }
         default:
-            return loadingCell
+            return emptyCell
         }
         
         cell.experince = experience
@@ -205,12 +212,12 @@ class ViewController: UIViewController, UICollectionViewDelegate, UICollectionVi
         
         switch indexPath.section {
         case 0:
-            experience = vm?.recommended[indexPath.row]
+            experience = vm?.recommended![indexPath.row] //sss
         case 1:
             if searchFlag {
                 experience = filteredExperinces[indexPath.row]
             } else {
-                experience = vm?.recent[indexPath.row]
+                experience = vm?.recent![indexPath.row] //sss
             }
         default:
             experience = Experience(id: "", title: "", coverPhoto: "", description: "", viewsNumber: 0, likesNumber: 0, recommended: 0, isLiked: 0, city: City(name: ""))

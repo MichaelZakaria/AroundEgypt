@@ -11,13 +11,13 @@ import UIKit
 class HomeViewModel {
     var bindResultToViewController: () -> Void = {}
     
-    var recommended: [Experience] = [] {
+    var recommended: [Experience]? {
         didSet {
             bindResultToViewController()
         }
     }
     
-    var recent: [Experience] = [] {
+    var recent: [Experience]? {
         didSet {
             bindResultToViewController()
         }
@@ -40,6 +40,7 @@ class HomeViewModel {
                     self?.recommended = response.data
                 }
             case .failure(let error):
+                self.recommended = []
                 print(error.localizedDescription)
             }
         }
@@ -53,6 +54,7 @@ class HomeViewModel {
                     self?.recent = response.data
                 }
             case .failure(let error):
+                self.recent = []
                 print(error.localizedDescription)
             }
         }
